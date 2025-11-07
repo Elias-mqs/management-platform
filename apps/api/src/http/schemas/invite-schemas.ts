@@ -21,3 +21,4 @@ export const registerWithInviteSchema = z.object({
 export type InviteTokenParam = z.infer<typeof inviteTokenParamSchema>['params']
 export type RegisterWithInviteBody = z.infer<typeof registerWithInviteSchema>['body']
 export type RegisterWithInviteParams = z.infer<typeof registerWithInviteSchema>['params']
+// Invite schemas
