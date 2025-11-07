@@ -82,3 +82,4 @@ export default function HomePage() {
   )
 }
 /* Improved UX */
+// Design improvements

@@ -69,3 +69,4 @@ export class ApproveIntentUseCase {
     }
   }
 }
+// Use case improvements

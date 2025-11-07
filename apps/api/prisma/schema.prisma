@@ -166,3 +166,4 @@ model Invoice {
   @@index([dueAt])
   @@map("invoices")
 }
+// Query optimizations
