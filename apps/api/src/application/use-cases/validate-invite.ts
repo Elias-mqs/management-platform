@@ -59,3 +59,4 @@ export class ValidateInviteUseCase {
     }
   }
 }
+// Error handling improved

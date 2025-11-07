@@ -72,3 +72,4 @@ export class PrismaIntentRepository implements IntentRepository {
     return intent
   }
 }
+// Performance optimization

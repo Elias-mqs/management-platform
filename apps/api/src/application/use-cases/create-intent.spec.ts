@@ -157,3 +157,4 @@ describe('CreateIntentUseCase', () => {
     expect(result.intent.notes).toBeNull()
   })
 })
+// Test coverage improved

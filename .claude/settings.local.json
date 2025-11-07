@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm install:*)",
+      "Bash(pnpm prisma:generate:*)",
+      "Bash(pnpm prisma db push:*)",
+      "Bash(timeout /t 2)",
+      "Bash(nul)",
+      "Bash(docker compose:*)",
+      "Bash(pnpm prisma migrate:*)",
+      "Bash(pnpm prisma:seed:*)",
+      "Bash(copy:*)",
+      "Bash(cat:*)",
+      "Bash(pnpm dev)",
+      "Bash(curl:*)",
+      "Bash(dir:*)",
+      "Bash(pnpm test:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(timeout /t 5 /nobreak)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
