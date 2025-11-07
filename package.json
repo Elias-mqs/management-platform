@@ -24,5 +24,3 @@
   },
   "packageManager": "pnpm@8.15.1"
 }
-"format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
-// Final version
