@@ -20,7 +20,7 @@ export class PrismaIntentRepository implements IntentRepository {
       },
     })
 
-    return intent
+    return intent as Intent
   }
 
   async findById(id: string): Promise<Intent | null> {
@@ -28,7 +28,7 @@ export class PrismaIntentRepository implements IntentRepository {
       where: { id },
     })
 
-    return intent
+    return intent as Intent | null
   }
 
   async findByEmail(email: string): Promise<Intent | null> {
@@ -37,7 +37,7 @@ export class PrismaIntentRepository implements IntentRepository {
       orderBy: { createdAt: 'desc' },
     })
 
-    return intent
+    return intent as Intent | null
   }
 
   async list(params: ListIntentsParams): Promise<{ items: Intent[]; total: number }> {
@@ -56,11 +56,11 @@ export class PrismaIntentRepository implements IntentRepository {
       this.prisma.intent.count({ where }),
     ])
 
-    return { items, total }
+    return { items: items as Intent[], total }
   }
 
   async updateStatus(data: UpdateIntentStatusData): Promise<Intent> {
-    const intent = await this.prisma.intent.update({
+    await this.prisma.intent.update({
       where: { id: data.id },
       data: {
         status: data.status,
@@ -69,7 +69,16 @@ export class PrismaIntentRepository implements IntentRepository {
       },
     })
 
-    return intent
+    // Fetch updated intent to ensure all fields are returned
+    const intent = await this.prisma.intent.findUnique({
+      where: { id: data.id },
+    })
+
+    if (!intent) {
+      throw new Error('Intent not found after update')
+    }
+
+    return intent as Intent
   }
 }
 // Performance optimization

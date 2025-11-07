@@ -24,6 +24,11 @@ export class InviteController {
       })
 
       if (!result.valid) {
+        // Return 404 for invalid token (not found)
+        if (result.reason === 'invalid') {
+          return reply.status(404).send(result)
+        }
+        // Return 410 for expired or used tokens
         return reply.status(410).send(result)
       }
 
@@ -58,6 +63,23 @@ export class InviteController {
       return reply.status(201).send(result)
     } catch (error) {
       if (error instanceof Error) {
+        // Handle invalid/expired/used invite tokens
+        if (error.message.includes('Invalid invite token')) {
+          return reply.status(404).send({
+            error: {
+              code: 'NOT_FOUND',
+              message: error.message,
+            },
+          })
+        }
+        if (error.message.includes('cannot be used')) {
+          return reply.status(410).send({
+            error: {
+              code: 'GONE',
+              message: error.message,
+            },
+          })
+        }
         return reply.status(400).send({
           error: {
             code: 'BAD_REQUEST',

@@ -28,9 +28,13 @@
       "@/domain/*": ["./src/domain/*"],
       "@/application/*": ["./src/application/*"],
       "@/infra/*": ["./src/infra/*"],
-      "@/http/*": ["./src/http/*"]
+      "@/http/*": ["./src/http/*"],
+      "@test/*": ["./test/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+  "include": ["src/**/*", "test/**/*", "vitest.config.ts", "vitest.integration.config.ts"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"],
+  "references": [
+    { "path": "./tsconfig.test.json" }
+  ]
 }

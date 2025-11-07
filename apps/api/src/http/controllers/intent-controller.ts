@@ -26,6 +26,15 @@ export class IntentController {
       return reply.status(201).send(result)
     } catch (error) {
       if (error instanceof Error) {
+        // Handle duplicate email
+        if (error.message.includes('already pending')) {
+          return reply.status(409).send({
+            error: {
+              code: 'CONFLICT',
+              message: error.message,
+            },
+          })
+        }
         return reply.status(400).send({
           error: {
             code: 'BAD_REQUEST',
@@ -78,6 +87,14 @@ export class IntentController {
       return reply.status(201).send(result)
     } catch (error) {
       if (error instanceof Error) {
+        if (error.message.includes('not found')) {
+          return reply.status(404).send({
+            error: {
+              code: 'NOT_FOUND',
+              message: error.message,
+            },
+          })
+        }
         return reply.status(400).send({
           error: {
             code: 'BAD_REQUEST',
@@ -105,6 +122,14 @@ export class IntentController {
       return reply.status(200).send(result)
     } catch (error) {
       if (error instanceof Error) {
+        if (error.message.includes('not found')) {
+          return reply.status(404).send({
+            error: {
+              code: 'NOT_FOUND',
+              message: error.message,
+            },
+          })
+        }
         return reply.status(400).send({
           error: {
             code: 'BAD_REQUEST',
