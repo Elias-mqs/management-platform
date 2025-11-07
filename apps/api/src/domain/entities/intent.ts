@@ -75,4 +75,3 @@ export class IntentEntity {
     return { ...this.props }
   }
 }
-// Type improvements
