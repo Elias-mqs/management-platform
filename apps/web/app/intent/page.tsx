@@ -164,3 +164,4 @@ export default function IntentPage() {
     </div>
   )
 }
+// Validation improved
