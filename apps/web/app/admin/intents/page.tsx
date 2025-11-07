@@ -258,3 +258,4 @@ export default function AdminIntentsPage() {
     </div>
   )
 }
+// Dashboard UX improved
