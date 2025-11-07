@@ -26,3 +26,4 @@ export const intentIdParamSchema = z.object({
 export type CreateIntentBody = z.infer<typeof createIntentSchema>['body']
 export type ListIntentsQuery = z.infer<typeof listIntentsQuerySchema>['querystring']
 export type IntentIdParam = z.infer<typeof intentIdParamSchema>['params']
+// Intent schemas
