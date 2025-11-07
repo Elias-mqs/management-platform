@@ -27,7 +27,6 @@ export async function adminIntentRoutes(app: FastifyInstance) {
           properties: {
             'x-admin-key': { type: 'string' },
           },
-          required: ['x-admin-key'],
         },
         response: {
           200: {
@@ -82,14 +81,26 @@ export async function adminIntentRoutes(app: FastifyInstance) {
           properties: {
             'x-admin-key': { type: 'string' },
           },
-          required: ['x-admin-key'],
         },
         response: {
           201: {
             description: 'Intent approved and invite created',
             type: 'object',
             properties: {
-              intent: { type: 'object' },
+              intent: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  fullName: { type: 'string' },
+                  email: { type: 'string' },
+                  phone: { type: 'string', nullable: true },
+                  notes: { type: 'string', nullable: true },
+                  status: { type: 'string' },
+                  createdAt: { type: 'string', format: 'date-time' },
+                  reviewedAt: { type: 'string', format: 'date-time', nullable: true },
+                  reviewedBy: { type: 'string', nullable: true },
+                },
+              },
               invite: {
                 type: 'object',
                 properties: {
@@ -125,14 +136,26 @@ export async function adminIntentRoutes(app: FastifyInstance) {
           properties: {
             'x-admin-key': { type: 'string' },
           },
-          required: ['x-admin-key'],
         },
         response: {
           200: {
             description: 'Intent rejected',
             type: 'object',
             properties: {
-              intent: { type: 'object' },
+              intent: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  fullName: { type: 'string' },
+                  email: { type: 'string' },
+                  phone: { type: 'string', nullable: true },
+                  notes: { type: 'string', nullable: true },
+                  status: { type: 'string' },
+                  createdAt: { type: 'string', format: 'date-time' },
+                  reviewedAt: { type: 'string', format: 'date-time', nullable: true },
+                  reviewedBy: { type: 'string', nullable: true },
+                },
+              },
             },
           },
         },

@@ -18,7 +18,7 @@ export class PrismaInviteRepository implements InviteRepository {
       },
     })
 
-    return invite
+    return invite as Invite
   }
 
   async findById(id: string): Promise<Invite | null> {
@@ -26,7 +26,7 @@ export class PrismaInviteRepository implements InviteRepository {
       where: { id },
     })
 
-    return invite
+    return invite as Invite | null
   }
 
   async findByToken(token: string): Promise<Invite | null> {
@@ -34,7 +34,7 @@ export class PrismaInviteRepository implements InviteRepository {
       where: { token },
     })
 
-    return invite
+    return invite as Invite | null
   }
 
   async findByIntentId(intentId: string): Promise<Invite | null> {
@@ -42,17 +42,26 @@ export class PrismaInviteRepository implements InviteRepository {
       where: { intentId },
     })
 
-    return invite
+    return invite as Invite | null
   }
 
   async updateStatus(data: UpdateInviteStatusData): Promise<Invite> {
-    const invite = await this.prisma.invite.update({
+    await this.prisma.invite.update({
       where: { id: data.id },
       data: {
         status: data.status,
       },
     })
 
-    return invite
+    // Fetch updated invite to ensure all fields are returned
+    const invite = await this.prisma.invite.findUnique({
+      where: { id: data.id },
+    })
+
+    if (!invite) {
+      throw new Error('Invite not found after update')
+    }
+
+    return invite as Invite
   }
 }
