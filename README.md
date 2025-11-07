@@ -280,3 +280,5 @@ Para dúvidas ou problemas, consulte a documentação ou abra uma issue.
 MIT
 
 ## Status: Complete
+
+## API Docs: http://localhost:3333/docs
