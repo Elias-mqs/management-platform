@@ -36,3 +36,4 @@ export class PrismaMemberRepository implements MemberRepository {
     return member
   }
 }
+// Repository improvements
