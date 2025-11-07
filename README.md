@@ -278,3 +278,5 @@ Para dúvidas ou problemas, consulte a documentação ou abra uma issue.
 ## Licença
 
 MIT
+
+## Status: Complete
