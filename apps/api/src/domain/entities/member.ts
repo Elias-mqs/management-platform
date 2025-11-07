@@ -69,4 +69,3 @@ export class MemberEntity {
     return rest
   }
 }
-# Updated type safety
