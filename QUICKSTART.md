@@ -14,7 +14,19 @@
 pnpm install
 ```
 
-### 2. Iniciar PostgreSQL
+### 2. Configurar Variáveis de Ambiente
+
+```bash
+# Backend
+cp apps/api/.env.example apps/api/.env
+
+# Frontend
+cp apps/web/.env.example apps/web/.env.local
+```
+
+**Importante:** As variáveis já estão configuradas para desenvolvimento local. Não é necessário editar os arquivos `.env`.
+
+### 3. Iniciar PostgreSQL
 
 ```bash
 docker compose up -d postgres
@@ -22,7 +34,7 @@ docker compose up -d postgres
 
 Aguarde o container ficar saudável (~10 segundos).
 
-### 3. Configurar Banco de Dados
+### 4. Configurar Banco de Dados
 
 ```bash
 cd apps/api
@@ -30,7 +42,7 @@ pnpm prisma db push
 pnpm prisma:seed
 ```
 
-### 4. Iniciar Backend
+### 5. Iniciar Backend
 
 ```bash
 # No diretório apps/api
@@ -40,7 +52,7 @@ pnpm dev
 ✅ **Backend rodando em: http://localhost:3333**
 📚 **Documentação API: http://localhost:3333/docs**
 
-### 5. Testar API
+### 6. Testar API
 
 #### Criar Intenção de Participação
 ```bash
