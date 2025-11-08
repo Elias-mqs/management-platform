@@ -15,8 +15,8 @@ export class PrismaIntentRepository implements IntentRepository {
       data: {
         fullName: data.fullName,
         email: data.email,
-        phone: data.phone,
-        notes: data.notes,
+        phone: data.phone ?? null,
+        notes: data.notes ?? null,
       },
     })
 
@@ -52,6 +52,9 @@ export class PrismaIntentRepository implements IntentRepository {
         orderBy: { createdAt: 'desc' },
         skip,
         take: pageSize,
+        include: {
+          invite: true,
+        },
       }),
       this.prisma.intent.count({ where }),
     ])
