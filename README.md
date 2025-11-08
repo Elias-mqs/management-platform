@@ -8,7 +8,7 @@ Plataforma para gerenciar grupos de networking empresarial, substituindo planilh
 - **Backend**: Fastify + TypeScript + Prisma (Clean Architecture)
 - **Frontend**: Next.js 14 + TypeScript + TanStack Query
 - **Database**: PostgreSQL (dev e prod)
-- **Testes**: Vitest - com 174 testes passando ✅
+- **Testes**: Vitest (174 testes passando ✅)
 
 ## Estrutura do Projeto
 
