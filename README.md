@@ -60,22 +60,33 @@ cp apps/web/.env.example apps/web/.env.local
 
 **Importante:** As variáveis já estão configuradas para desenvolvimento local. Não é necessário editar os arquivos `.env` para rodar localmente.
 
-3. **Configure o banco de dados**
+3. **Escolha o modo de execução**
 
-**PostgreSQL via Docker (Recomendado)**
+#### Opção A: Docker Compose (Recomendado - Tudo em Containers)
+
+Inicie todos os serviços (PostgreSQL + Backend + Frontend) com um único comando:
 
 ```bash
-docker compose up -d postgres
+docker compose up -d
 ```
 
-Execute setup do banco:
+Aguarde alguns segundos para os serviços iniciarem. O backend executará automaticamente as migrações do banco.
+
+#### Opção B: Execução Local (Desenvolvimento)
+
+**Configure o banco de dados:**
+
 ```bash
+# Inicie apenas o PostgreSQL
+docker compose up -d postgres
+
+# Execute as migrações
 cd apps/api
 pnpm prisma db push
 pnpm prisma:seed
 ```
 
-4. **Inicie os servidores**
+**Inicie os servidores:**
 
 ```bash
 # Backend (Terminal 1)
@@ -86,6 +97,8 @@ pnpm dev
 cd apps/web
 pnpm dev
 ```
+
+---
 
 A aplicação estará disponível em:
 - **Frontend**: http://localhost:3000 🌐
@@ -158,21 +171,38 @@ pnpm build                # Build de produção
 
 ### Desenvolvimento com Docker Compose
 
+O projeto está configurado para rodar completamente em containers:
+
 ```bash
-# Subir todos os serviços
-docker compose up
+# Subir todos os serviços (PostgreSQL + Backend + Frontend)
+docker compose up -d
 
-# Apenas banco de dados
-docker compose up postgres
+# Ver logs dos serviços
+docker compose logs -f
 
-# Rebuild e restart
-docker compose up --build
+# Ver logs de um serviço específico
+docker compose logs -f api
+docker compose logs -f web
+
+# Rebuild e restart (após mudanças no código)
+docker compose up -d --build
 
 # Parar serviços
 docker compose down
 
-# Remover volumes (cuidado: apaga dados)
+# Remover volumes (cuidado: apaga dados do banco)
 docker compose down -v
+```
+
+**Nota:** Quando usar Docker Compose completo, não é necessário rodar `pnpm dev` manualmente. Os serviços já iniciam automaticamente.
+
+### Apenas Banco de Dados (Desenvolvimento Local)
+
+Se preferir rodar backend e frontend localmente:
+
+```bash
+# Subir apenas PostgreSQL
+docker compose up -d postgres
 ```
 
 ### Build de Produção
@@ -181,7 +211,7 @@ docker compose down -v
 # Backend
 docker build -f apps/api/Dockerfile -t networking-api .
 
-# Frontend (quando implementado)
+# Frontend
 docker build -f apps/web/Dockerfile -t networking-web .
 ```
 

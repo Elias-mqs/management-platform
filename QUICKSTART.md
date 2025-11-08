@@ -26,6 +26,51 @@ cp apps/web/.env.example apps/web/.env.local
 
 **Importante:** As variáveis já estão configuradas para desenvolvimento local. Não é necessário editar os arquivos `.env`.
 
+### 3. Escolha o Modo de Execução
+
+---
+
+## 🐳 Opção A: Docker Compose (Recomendado)
+
+Execute tudo (PostgreSQL + Backend + Frontend) com um único comando:
+
+```bash
+docker compose up -d
+```
+
+**Pronto!** 🎉 Aguarde ~30 segundos para os serviços iniciarem.
+
+Verifique se tudo está rodando:
+```bash
+docker compose ps
+```
+
+Acesse:
+- **Frontend**: http://localhost:3000 🌐
+- **API**: http://localhost:3333
+- **Docs**: http://localhost:3333/docs 📚
+
+### Ver Logs
+
+```bash
+# Todos os serviços
+docker compose logs -f
+
+# Serviço específico
+docker compose logs -f api
+docker compose logs -f web
+```
+
+### Parar os Serviços
+
+```bash
+docker compose down
+```
+
+---
+
+## 💻 Opção B: Execução Local (Sem Docker)
+
 ### 3. Iniciar PostgreSQL
 
 ```bash
@@ -52,7 +97,18 @@ pnpm dev
 ✅ **Backend rodando em: http://localhost:3333**
 📚 **Documentação API: http://localhost:3333/docs**
 
-### 6. Testar API
+### 6. Iniciar Frontend
+
+```bash
+# Em outro terminal, no diretório apps/web
+pnpm dev
+```
+
+✅ **Frontend rodando em: http://localhost:3000**
+
+---
+
+## 🧪 Testar API
 
 #### Criar Intenção de Participação
 ```bash
@@ -95,9 +151,9 @@ curl -X POST http://localhost:3333/api/admin/intents/{intentId}/approve \
 desafio-negocio/
 ├── apps/
 │   ├── api/              ✅ Backend completo (Fastify + Prisma)
-│   └── web/              🚧 Frontend (Next.js 14) - em desenvolvimento
+│   └── web/              ✅ Frontend completo (Next.js 14)
 ├── docs/                 📄 Documentação do desafio
-└── docker-compose.yml    🐳 PostgreSQL configurado
+└── docker-compose.yml    🐳 PostgreSQL + API + Web configurados
 ```
 
 ## Endpoints Principais
@@ -118,10 +174,23 @@ desafio-negocio/
 
 ## Troubleshooting
 
-### Backend não inicia
+### Serviços não iniciam com Docker Compose
+```bash
+# Verificar status dos containers
+docker compose ps
+
+# Ver logs de erro
+docker compose logs
+
+# Rebuild completo
+docker compose down
+docker compose up -d --build
+```
+
+### Backend não inicia (modo local)
 ```bash
 # Verificar se PostgreSQL está rodando
-docker compose ps
+docker compose ps postgres
 
 # Verificar logs
 docker compose logs postgres
@@ -136,35 +205,63 @@ pnpm prisma:seed
 ```bash
 # Verificar se .env existe
 ls apps/api/.env
+ls apps/web/.env.local
 
-# Se não existir, criar baseado no exemplo
-cp .env.example apps/api/.env
+# Se não existirem, criar baseados nos exemplos
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env.local
 ```
 
-### Port 3333 em uso
+### Port 3333 ou 3000 em uso
 ```bash
 # Windows
 netstat -ano | findstr :3333
 taskkill /PID <pid> /F
 
 # Linux/Mac
-lsof -ti:3333 | xargs kill
+lsof -ti:3333 | xargs kill -9
+lsof -ti:3000 | xargs kill -9
+```
+
+### Docker Compose não encontrado
+```bash
+# Verificar se Docker está instalado
+docker --version
+docker compose version
+
+# Se estiver usando docker-compose antigo
+docker-compose up -d
 ```
 
 ## Próximos Passos
 
-### Frontend (em desenvolvimento)
-```bash
-cd apps/web
-pnpm install
-pnpm dev
-```
+### Acessar a Aplicação
+- 🌐 **Frontend**: http://localhost:3000
+- 📚 **API Docs**: http://localhost:3333/docs
+- ❤️ **Health Check**: http://localhost:3333/healthz
 
 ### Executar Testes
 ```bash
 cd apps/api
 pnpm test
 pnpm test:coverage
+```
+
+### Comandos Úteis Docker
+
+```bash
+# Parar serviços
+docker compose down
+
+# Reiniciar serviço específico
+docker compose restart api
+docker compose restart web
+
+# Rebuild após mudanças
+docker compose up -d --build
+
+# Remover tudo (incluindo volumes)
+docker compose down -v
 ```
 
 ## Documentação Completa
@@ -176,10 +273,11 @@ pnpm test:coverage
 
 ## Suporte
 
-- Swagger UI: http://localhost:3333/docs (interface interativa)
-- Issues: Consulte a documentação completa
-- Health: http://localhost:3333/healthz
+- 🌐 Frontend: http://localhost:3000
+- 📚 Swagger UI: http://localhost:3333/docs (interface interativa)
+- ❤️ Health: http://localhost:3333/healthz
+- 📖 Issues: Consulte a documentação completa
 
 ---
 
-**Status**: Backend 100% funcional ✅ | Frontend em desenvolvimento 🚧
+**Status**: Backend ✅ | Frontend ✅ | Docker Compose ✅
