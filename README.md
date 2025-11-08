@@ -8,7 +8,7 @@ Plataforma para gerenciar grupos de networking empresarial, substituindo planilh
 - **Backend**: Fastify + TypeScript + Prisma (Clean Architecture)
 - **Frontend**: Next.js 14 + TypeScript + TanStack Query
 - **Database**: PostgreSQL (dev e prod)
-- **Testes**: Vitest (unit tests) com 14 testes passando ✅
+- **Testes**: Vitest - com 174 testes passando ✅
 
 ## Estrutura do Projeto
 
@@ -134,19 +134,54 @@ Use o header `x-admin-key: dev-admin-key-123` para acessar rotas admin.
 - `POST /api/admin/intents/:id/approve` - Aprovar intenção
 - `POST /api/admin/intents/:id/reject` - Rejeitar intenção
 
-## Testes
+## 🧪 Testes
 
+### Configuração do Ambiente de Testes
+
+**1. Subir o banco de dados de testes:**
 ```bash
-# Backend - Testes unitários
+docker compose -f docker-compose.test.yml up -d
+```
+
+**2. Executar os testes:**
+```bash
 cd apps/api
+
+# Testes unitários (84 testes)
 pnpm test
 
-# Com coverage
+# Testes de integração (90 testes)
+pnpm test:integration
+
+# Todos os testes com cobertura (174 testes total)
 pnpm test:coverage
 
-# Watch mode
+# Watch mode (desenvolvimento)
 pnpm test:watch
+pnpm test:integration:watch
 ```
+
+**3. Parar o ambiente de testes:**
+```bash
+# Parar container
+docker compose -f docker-compose.test.yml down
+
+# Parar e limpar dados de teste
+docker compose -f docker-compose.test.yml down -v
+```
+
+### Cobertura de Testes
+
+- ✅ **174 testes totais**
+  - 84 testes unitários
+  - 90 testes de integração
+- ✅ Entities (Domain Layer)
+- ✅ Use Cases (Application Layer)
+- ✅ Services (Hash, Token)
+- ✅ Repositories (Infrastructure Layer)
+- ✅ HTTP Controllers & Routes
+
+**Nota:** O banco de testes usa a porta **5434** (diferente do desenvolvimento que usa **5432**)
 
 ## Comandos Úteis
 
@@ -166,7 +201,7 @@ pnpm prisma:generate      # Gerar Prisma Client
 pnpm prisma:migrate       # Criar nova migração
 pnpm prisma:seed          # Popular banco com dados de teste
 
-# Frontend (apps/web) - A IMPLEMENTAR
+# Frontend (apps/web)
 pnpm dev                  # Servidor de desenvolvimento
 pnpm build                # Build de produção
 ```
@@ -199,6 +234,25 @@ docker compose down -v
 ```
 
 **Nota:** Quando usar Docker Compose completo, não é necessário rodar `pnpm dev` manualmente. Os serviços já iniciam automaticamente.
+
+### Docker - Ambiente de Testes
+
+```bash
+# Subir banco de testes (porta 5434)
+docker compose -f docker-compose.test.yml up -d
+
+# Ver logs do banco de testes
+docker compose -f docker-compose.test.yml logs -f
+
+# Verificar status
+docker compose -f docker-compose.test.yml ps
+
+# Parar banco de testes
+docker compose -f docker-compose.test.yml down
+
+# Parar e limpar dados
+docker compose -f docker-compose.test.yml down -v
+```
 
 ### Apenas Banco de Dados (Desenvolvimento Local)
 

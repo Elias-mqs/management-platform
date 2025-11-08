@@ -249,17 +249,54 @@ docker-compose up -d
 - 📚 **API Docs**: http://localhost:3333/docs
 - ❤️ **Health Check**: http://localhost:3333/healthz
 
-### Executar Testes
+---
+
+## 🧪 Executar Testes
+
+### 1. Subir o Banco de Dados de Testes
+
+```bash
+# Iniciar container PostgreSQL de testes (porta 5434)
+docker compose -f docker-compose.test.yml up -d
+```
+
+### 2. Rodar os Testes
+
 ```bash
 cd apps/api
+
+# Testes unitários (84 testes)
 pnpm test
+
+# Testes de integração (90 testes)
+pnpm test:integration
+
+# Todos os testes com cobertura (174 testes total)
 pnpm test:coverage
+
+# Modo watch (desenvolvimento)
+pnpm test:watch
 ```
+
+### 3. Parar o Banco de Testes
+
+```bash
+# Parar container de testes
+docker compose -f docker-compose.test.yml down
+
+# Parar e limpar dados de teste
+docker compose -f docker-compose.test.yml down -v
+```
+
+**Nota:** O banco de testes roda na porta **5434** (diferente do desenvolvimento que usa 5432)
+
+---
 
 ### Comandos Úteis Docker
 
+#### Desenvolvimento
 ```bash
-# Parar serviços
+# Parar serviços de desenvolvimento
 docker compose down
 
 # Reiniciar serviço específico
@@ -271,6 +308,18 @@ docker compose up -d --build
 
 # Remover tudo (incluindo volumes)
 docker compose down -v
+```
+
+#### Testes
+```bash
+# Ver logs do banco de testes
+docker compose -f docker-compose.test.yml logs -f
+
+# Verificar status
+docker compose -f docker-compose.test.yml ps
+
+# Acessar o banco de testes
+docker compose -f docker-compose.test.yml exec postgres-test psql -U test -d networking_test
 ```
 
 ## Documentação Completa
