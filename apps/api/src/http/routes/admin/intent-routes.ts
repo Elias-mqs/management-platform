@@ -47,6 +47,18 @@ export async function adminIntentRoutes(app: FastifyInstance) {
                     createdAt: { type: 'string', format: 'date-time' },
                     reviewedAt: { type: 'string', format: 'date-time', nullable: true },
                     reviewedBy: { type: 'string', nullable: true },
+                    invite: {
+                      type: 'object',
+                      nullable: true,
+                      properties: {
+                        id: { type: 'string' },
+                        intentId: { type: 'string' },
+                        token: { type: 'string' },
+                        expiresAt: { type: 'string', format: 'date-time' },
+                        status: { type: 'string' },
+                        createdAt: { type: 'string', format: 'date-time' },
+                      },
+                    },
                   },
                 },
               },
