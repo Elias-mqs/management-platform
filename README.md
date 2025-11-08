@@ -67,7 +67,7 @@ cp apps/web/.env.example apps/web/.env.local
 Inicie todos os serviços (PostgreSQL + Backend + Frontend) com um único comando:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 Aguarde ~30 segundos para os serviços iniciarem. O sistema irá automaticamente:
@@ -179,7 +179,7 @@ O projeto está configurado para rodar completamente em containers:
 
 ```bash
 # Subir todos os serviços (PostgreSQL + Backend + Frontend)
-docker compose up -d
+docker compose up -d --build
 
 # Ver logs dos serviços
 docker compose logs -f

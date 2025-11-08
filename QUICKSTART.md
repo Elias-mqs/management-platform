@@ -35,7 +35,7 @@ cp apps/web/.env.example apps/web/.env.local
 Execute tudo (PostgreSQL + Backend + Frontend) com um único comando:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 **Pronto!** 🎉 Aguarde ~30 segundos para os serviços iniciarem.
