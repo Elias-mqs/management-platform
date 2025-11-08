@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Link from 'next/link'
 import { ArrowLeft, Loader2 } from 'lucide-react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -28,7 +28,7 @@ type IntentForm = z.infer<typeof intentSchema>
 export default function IntentPage() {
   const router = useRouter()
   const { toast } = useToast()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const queryClient = useQueryClient()
 
   const {
     register,
@@ -38,40 +38,34 @@ export default function IntentPage() {
     resolver: zodResolver(intentSchema),
   })
 
-  const onSubmit = async (data: IntentForm) => {
-    try {
-      setIsSubmitting(true)
-
-      const response = await api.post<CreateIntentResponse>('/api/intents', data as CreateIntentInput)
+  const createIntentMutation = useMutation({
+    mutationFn: (data: CreateIntentInput) =>
+      api.post<CreateIntentResponse>('/api/intents', data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['intents'] })
 
       toast({
         title: 'Success!',
         description: 'Your participation intent has been submitted successfully. An admin will review it soon.',
       })
 
-      // Redirect to home after 2 seconds
       setTimeout(() => {
         router.push('/')
       }, 2000)
-    } catch (error) {
+    },
+    onError: (error: ApiError) => {
       console.error('Error submitting intent:', error)
 
-      if (error instanceof ApiError) {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: error.message,
-        })
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Error',
-          description: 'Failed to submit intent. Please try again.',
-        })
-      }
-    } finally {
-      setIsSubmitting(false)
-    }
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message || 'Failed to submit intent. Please try again.',
+      })
+    },
+  })
+
+  const onSubmit = async (data: IntentForm) => {
+    createIntentMutation.mutate(data as CreateIntentInput)
   }
 
   return (
@@ -101,7 +95,7 @@ export default function IntentPage() {
                     id="fullName"
                     placeholder="John Doe"
                     {...register('fullName')}
-                    disabled={isSubmitting}
+                    disabled={createIntentMutation.isPending}
                   />
                   {errors.fullName && (
                     <p className="text-sm text-red-500">{errors.fullName.message}</p>
@@ -117,7 +111,7 @@ export default function IntentPage() {
                     type="email"
                     placeholder="john@example.com"
                     {...register('email')}
-                    disabled={isSubmitting}
+                    disabled={createIntentMutation.isPending}
                   />
                   {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
                 </div>
@@ -129,7 +123,7 @@ export default function IntentPage() {
                     type="tel"
                     placeholder="+1 234 567 8900"
                     {...register('phone')}
-                    disabled={isSubmitting}
+                    disabled={createIntentMutation.isPending}
                   />
                   {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
                 </div>
@@ -141,13 +135,13 @@ export default function IntentPage() {
                     className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     placeholder="Tell us why you want to join..."
                     {...register('notes')}
-                    disabled={isSubmitting}
+                    disabled={createIntentMutation.isPending}
                   />
                   {errors.notes && <p className="text-sm text-red-500">{errors.notes.message}</p>}
                 </div>
 
-                <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
-                  {isSubmitting ? (
+                <Button type="submit" className="w-full" size="lg" disabled={createIntentMutation.isPending}>
+                  {createIntentMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Submitting...

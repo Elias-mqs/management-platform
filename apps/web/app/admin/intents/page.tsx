@@ -38,7 +38,7 @@ export default function AdminIntentsPage() {
           'Content-Type': 'text/plain',
         },
       }),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['intents'] })
       toast({
         title: 'Intent approved!',
@@ -79,7 +79,7 @@ export default function AdminIntentsPage() {
   })
 
   const copyToken = async (token: string) => {
-    await navigator.clipboard.writeText(token)
+    await navigator.clipboard.writeText(`${window.location.origin}/register?token=${token}`)
     setCopiedToken(token)
     toast({
       title: 'Copied!',
@@ -218,19 +218,20 @@ export default function AdminIntentsPage() {
                         </div>
 
                         {/* Show token after approval */}
-                        {intent.status === 'APPROVED' && (
+                        {intent.status === 'APPROVED' && intent.invite && (
                           <div className="mt-4 p-3 bg-gray-600 rounded-md">
                             <p className="text-xs text-gray-400 mb-1">Registration URL:</p>
                             <div className="flex items-center gap-2">
                               <code className="flex-1 text-xs text-white break-all">
-                                {getInviteUrl('TOKEN_HERE')}
+                                {getInviteUrl(intent.invite.token)}
                               </code>
                               <Button
                                 size="sm"
                                 variant="ghost"
                                 className="shrink-0"
+                                onClick={() => copyToken(intent.invite!.token)}
                               >
-                                {copiedToken ? (
+                                {copiedToken === intent.invite.token ? (
                                   <Check className="h-4 w-4" />
                                 ) : (
                                   <Copy className="h-4 w-4" />
@@ -258,4 +259,3 @@ export default function AdminIntentsPage() {
     </div>
   )
 }
-// Dashboard UX improved
