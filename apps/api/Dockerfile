@@ -26,8 +26,12 @@ COPY turbo.json ./
 # Generate Prisma Client
 RUN cd apps/api && pnpm prisma:generate
 
+# Copy entrypoint script
+COPY apps/api/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 WORKDIR /app
 
 EXPOSE 3333
 
-CMD ["pnpm", "dev", "--filter=@networking-groups/api"]
+ENTRYPOINT ["docker-entrypoint.sh"]

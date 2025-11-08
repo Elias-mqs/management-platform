@@ -40,6 +40,13 @@ docker compose up -d
 
 **Pronto!** 🎉 Aguarde ~30 segundos para os serviços iniciarem.
 
+O sistema irá automaticamente:
+- ✅ Iniciar o PostgreSQL
+- ✅ Executar as migrações do banco de dados
+- ✅ Popular o banco com dados de teste (seed)
+- ✅ Iniciar o backend (API)
+- ✅ Iniciar o frontend (Web)
+
 Verifique se tudo está rodando:
 ```bash
 docker compose ps
@@ -141,9 +148,11 @@ curl -X POST http://localhost:3333/api/admin/intents/{intentId}/approve \
 - **Password**: Admin@123
 - **Admin Key**: dev-admin-key-123
 
-### Intents de Teste
-- john@example.com (PENDING)
-- jane@example.com (PENDING)
+### Membros de Teste (criados automaticamente pelo seed)
+Os dados de teste incluem:
+- 1 Admin (admin@networkinggroups.com)
+- 2 Intents PENDING (john@example.com, jane@example.com)
+- Você pode testar aprovação de intents e geração de tokens de convite
 
 ## Estrutura do Projeto
 

@@ -70,7 +70,11 @@ Inicie todos os serviços (PostgreSQL + Backend + Frontend) com um único comand
 docker compose up -d
 ```
 
-Aguarde alguns segundos para os serviços iniciarem. O backend executará automaticamente as migrações do banco.
+Aguarde ~30 segundos para os serviços iniciarem. O sistema irá automaticamente:
+- ✅ Iniciar o PostgreSQL
+- ✅ Executar as migrações do banco de dados
+- ✅ Popular o banco com dados de teste (seed)
+- ✅ Iniciar o backend e frontend
 
 #### Opção B: Execução Local (Desenvolvimento)
 

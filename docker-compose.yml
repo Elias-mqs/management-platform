@@ -20,9 +20,9 @@ services:
       - ./apps/api:/app/apps/api
       - /app/node_modules
       - /app/apps/api/node_modules
-    command: pnpm dev --filter=@networking-groups/api
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - networking-groups
 
