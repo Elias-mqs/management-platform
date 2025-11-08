@@ -11,6 +11,7 @@ export interface Intent {
   createdAt: string
   reviewedAt?: string | null
   reviewedBy?: string | null
+  invite?: Invite | null
 }
 
 export interface CreateIntentInput {
