@@ -1,5 +1,14 @@
 export type IntentStatus = 'PENDING' | 'APPROVED' | 'REJECTED'
 
+export interface Invite {
+  id: string
+  intentId: string
+  token: string
+  expiresAt: Date
+  status: string
+  createdAt: Date
+}
+
 export interface Intent {
   id: string
   fullName: string
@@ -10,6 +19,7 @@ export interface Intent {
   createdAt: Date
   reviewedAt?: Date | null
   reviewedBy?: string | null
+  invite?: Invite | null
 }
 
 export class IntentEntity {
@@ -49,6 +59,10 @@ export class IntentEntity {
 
   get reviewedBy(): string | null | undefined {
     return this.props.reviewedBy
+  }
+
+  get invite(): Invite | null | undefined {
+    return this.props.invite
   }
 
   isPending(): boolean {
