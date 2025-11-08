@@ -11,8 +11,8 @@ services:
     environment:
       NODE_ENV: development
       PORT: 3333
-      DATABASE_URL: file:./dev.db
-      DB_PROVIDER: sqlite
+      DATABASE_URL: postgresql://networking:networking123@postgres:5432/networking_groups
+      DB_PROVIDER: postgresql
       JWT_SECRET: super-secret-jwt-key-change-in-production-min-32-chars
       ADMIN_KEY: dev-admin-key-123
       INVITE_TTL_DAYS: 7
@@ -61,7 +61,7 @@ services:
     networks:
       - networking-groups
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U networking"]
+      test: ["CMD-SHELL", "pg_isready -U networking -d networking_groups"]
       interval: 10s
       timeout: 5s
       retries: 5
